@@ -1,0 +1,4 @@
+/home/alpacox/Documenti/Programmi/clion-2019.1.2/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" "/home/alpacox/Documenti/Ingegneria Informatica/Programmazione/Progetto/Draghi e Sotterranei"
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/alpacox/Documenti/Ingegneria Informatica/Programmazione/Progetto/Draghi e Sotterranei/cmake-build-debug
