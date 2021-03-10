@@ -1,5 +1,5 @@
 # Fani-Ippoliti
 Branches index
-- Draghi e Sotterranei v0.1
+- Draghi e Sotterranei
 - UML
 - Test SFLM
