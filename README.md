@@ -1,3 +1,3 @@
 # Draghi e Sotterranei
-Indirizzo repo clonabile del gioco\
+Repo clonabile del gioco\
 https://github.com/CoxFani/Draghi_e_Sotterranei
