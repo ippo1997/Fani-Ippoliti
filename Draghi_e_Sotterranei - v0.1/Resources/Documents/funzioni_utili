@@ -1,0 +1,172 @@
+#funzione che indica dove "runna" il progetto
+      char *stringa = get_current_dir_name();
+    if(stringa != nullptr){
+        std::cout<<"stringa piena" << "\n";
+        for(int i=0; i<100; i++){                 //Capiamo dove siamo
+    std::cout << stringa[i] ;} std::cout << endl;  } //Attuale percorso file
+    else
+        std::cout<<"stringa vuota" << endl ;
+
+#Aiuta a trovare le coordinate sullo schermo per posizionare cose
+            sf::Text mouseText;
+            mouseText.setPosition(this->mousePosView.x, this->mousePosView.y - 50);
+            mouseText.setFont(this->font);
+            mouseText.setCharacterSize(20);
+            std::stringstream  ss;
+            ss << this->mousePosView.x << " " << this->mousePosView.y;
+            mouseText.setString(ss.str());
+
+            target-> draw(mouseText);
+
+#in Sword.cpp
+    /*
+    if(this->attackTimer.getElapsedTime().asMilliseconds() < this->attackTimerMax / 4){
+        float len = std::sqrt(pow(dX, 2) + pow(dY, 2));
+        sf::Vector2f normVec(dX / len, dY / len);
+
+        this->weapon_sprite.setPosition(center.x + normVec.x + 10.f, center.y + normVec.y * 10.f);
+    }
+    else
+        this->weapon_sprite.setRotation(deg + 90.f); //commentare riga 33 se togli commento da questo if
+    */
+
+#vecchio sistema di spostamento
+    this->keybinds["CLOSE"] = this->supportedKeysData->at("Escape");
+    this->keybinds["MOVE_LEFT"] = this->supportedKeysData->at("A");
+    this->keybinds["MOVE_RIGHT"] = this->supportedKeysData->at("D");
+    this->keybinds["MOVE_UP"] = this->supportedKeysData->at("W");
+    this->keybinds["MOVE_DOWN"] = this->supportedKeysData->at("S");
+
+        this->supportedKeysData["Escape"] = sf::Keyboard::Escape;
+        this->supportedKeysData["A"] = sf::Keyboard::A;
+        this->supportedKeysData["D"] = sf::Keyboard::D;
+        this->supportedKeysData["W"] = sf::Keyboard::W;
+        this->supportedKeysData["S"] = sf::Keyboard::S;
+
+#debug tasti accettati
+    for (auto i : this->supportedKeysData)
+        {
+            std::cout << i.first << " " << i.second << "\n";
+        }
+
+#system("pause");
+getchar();
+
+#dado
+int value=0;
+   Dice d20(20);
+   for(int i= 0; i<50; i++) {
+       value = d20.roll(1);
+       std::cout<< value << std::endl;
+   }
+
+#funzione di collisione già adattata al nostro progetto
+if (heroBounds.left < wallBounds.left
+                    && heroBounds.left + heroBounds.width < wallBounds.left + wallBounds.width
+                    && heroBounds.top < wallBounds.top + wallBounds.height
+                    && heroBounds.top + heroBounds.height > wallBounds.top){
+                    gameCharacter->stopVelocityX();
+                    gameCharacter->setPosition(wallBounds.left - heroBounds.width, heroBounds.top);
+                }
+                else if (heroBounds.left > wallBounds.left
+                         && heroBounds.left + heroBounds.width > wallBounds.left + wallBounds.width
+                         && heroBounds.top < wallBounds.top + wallBounds.height
+                         && heroBounds.top + heroBounds.height > wallBounds.top){
+                    gameCharacter->stopVelocityX();
+                    gameCharacter->setPosition(wallBounds.left - heroBounds.width, heroBounds.top);
+                }
+
+#prova SFML
+unsigned int windowHeight = 400;
+    unsigned int windowWidth = 400;
+
+    sf::RenderWindow windowData(sf::VideoMode(windowWidth, windowHeight), "Draghi & Sotterranei");
+
+    sf::Texture texture;
+    if (!texture.loadFromFile("Images/Sprites_1.png")){              <- ||PROVA SFML||
+            return 0;
+    }
+    sf::Sprite sprite;
+    sprite.setTexture(texture);
+
+    Map map = Map();
+
+    while (windowData.isOpen()) {
+        sf::Event event;
+        while (windowData.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                windowData.close();
+        }
+
+        windowData.clear();
+
+        for ( int i = 0; i < map.gridLength; i++){
+            for ( int j = 0; j < map.gridLength; j++){
+                windowData.draw(map.tiles[i][j]->sprite);
+            }
+        }
+
+        windowData.display();
+    }
+
+    #file .frag
+    varying in vec4 vert_pos;
+
+    uniform sampler2D texture;
+    uniform bool hasTexture;
+    uniform vec2 lightPos;
+
+    void main()
+    {
+    	//Ambient light
+    	vec4 ambient = vec4(0.02, 0.02, 0.02, 1);
+
+    	//Convert light to view coords
+    	lightPos = (gl_ModelViewProjectionMatrix * vec4(lightPos, 0, 1)).xy;
+
+    	//Calculate the vector from light to pixel (Make circular)
+    	vec2 lightToFrag = lightPos - vert_pos.xy;
+    	lightToFrag.y = lightToFrag.y / 1.7;
+
+    	//Length of the vector (distance)
+    	float vecLength = clamp(length(lightToFrag) * 4, 0, 1); //Maggiore è il valore che moltiplica lenght(lightToFrag) e minore sarà l'alone di luce
+
+        // lookup the pixel in the texture
+        vec4 pixel = texture2D(texture, gl_TexCoord[0].xy);
+
+        // multiply it by the color and lighting
+    	if(hasTexture == true)
+    	{
+    		gl_FragColor = gl_Color * pixel * (clamp(ambient + vec4(1-vecLength, 1-vecLength, 1-vecLength, 1), 0, 1));
+    	}
+    	else
+    	{
+    		gl_FragColor = gl_Color;
+    	}
+    }
+
+    #file .vert
+    varying out vec4 vert_pos;
+
+    void main()
+    {
+        // transform the vertex position
+    	vert_pos = gl_ModelViewProjectionMatrix * gl_Vertex;
+        gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+
+        // transform the texture coordinates
+        gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;
+
+        // forward the vertex color
+        gl_FrontColor = gl_Color;
+    }
+
+#Controllo valore numerico della key della tastiera
+
+sf::Keyboard:: //inserire key desiderata e passarci sopra il cursore
+
+#Nascondere la console da Windows
+#include<Windows.h>
+    HWND hWnd = GetConsoleWindow();
+    ShowWindow(hWnd, SW_HIDE); // oppure SW_SHOW, nel caso si voglia vedere
